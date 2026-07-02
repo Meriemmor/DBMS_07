@@ -253,14 +253,13 @@ git push -u origin main
 it only under `if __name__ == "__main__"`. What is `__name__` set to when the
 file is run directly? What is it set to when the file is *imported* by another
 module — and why does this distinction matter?
-
-> *Your answer:*
+> When a Python file is executed directly, the special variable __name__ has the value "__main__". If the file is imported into another program, __name__ is assigned the module's name instead.This allows the script to execute main() only when run on its own, while letting other programs import and use functions without executing the script's main code.
 
 **Question 3.2:** The `kreisflaeche` function could be defined without
 importing `math` by hard-coding `3.14159` instead of `math.pi`. Give one
 concrete reason why using `math.pi` is preferable.
 
-> *Your answer:*
+> math.pi provides a highly accurate floating-point representation of π that is built into Python. Using a hard-coded value such as 3.14159 reduces precision and can introduce small rounding errors, especially in repeated or complex calculations
 
 ---
 
@@ -420,7 +419,8 @@ uv --version
 
 > **Screenshot 4:** Take a screenshot showing the `uv --version` output.
 >
-> `[insert screenshot]`
+> <img width="733" height="89" alt="image" src="https://github.com/user-attachments/assets/d21342fc-35cc-4c95-b2ec-fbf6535780af" />
+
 
 ---
 
@@ -496,7 +496,8 @@ uv run python3 berechnung.py
 > **Screenshot 5:** Take a screenshot showing the colourful table output
 > from `uv run`.
 >
-> `[insert screenshot]`
+> <img width="816" height="97" alt="image" src="https://github.com/user-attachments/assets/c04b957c-bc9c-407d-92c8-4fa9024621f7" />
+
 
 ### Step 5 – Commit
 
@@ -513,13 +514,13 @@ git push
 `uv.lock` be committed to version control while generated files like `.venv/`
 should not?
 
-> *Your answer:*
+> The pyproject.toml file lists the project's required dependencies, such as rich, while allowing any version that satisfies the specified constraints. In contrast, uv.lock records the exact package versions that were installed, ensuring that uv sync recreates the same environment on every machine. The .venv/ directory only contains the local virtual environment, which can be rebuilt at any time from the lockfile, so it is typically excluded from version control to avoid unnecessarily increasing the repository size.
 
 **Question 4.2:** `uv run python3 berechnung.py` uses the virtual
 environment's Python. What would happen if you ran `python3 berechnung.py`
 directly (without `uv run`) and `rich` is not installed system-wide?
 
-> *Your answer:*
+> Running the script without activating the virtual environment would likely result in a ModuleNotFoundError stating that there is no module named rich. This happens because the required package is installed only inside the virtual environment, while the system Python interpreter cannot access those isolated dependencies, causing the program to terminate.
 
 ---
 
