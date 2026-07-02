@@ -58,7 +58,8 @@ pg_isready
 
 > **Screenshot 1:** Take a screenshot showing all three version/status checks.
 >
-> `[insert screenshot]`
+> <img width="1015" height="241" alt="image" src="https://github.com/user-attachments/assets/ca678985-efa2-4783-a4d2-ccb4622b6a34" />
+
 
 ---
 
@@ -111,19 +112,21 @@ Exit the REPL:
 > **Screenshot 2:** Take a screenshot showing all REPL interactions above,
 > including the f-string output.
 >
-> `[insert screenshot]`
+><img width="912" height="362" alt="image" src="https://github.com/user-attachments/assets/b9885d2b-0433-4563-b7f9-ecbb1f7576d7" />
+
+
 
 ### Questions for Section 1
 
 **Question 1.1:** In the REPL, typing `2 ** 10` without `print` still shows
 `1024`. Why does this work in the REPL but *not* in a script file?
 
-> *Your answer:*
+> In the REPL, every evaluated expression is automatically displayed while In a script, expressions are evaluated but the result is discarded unless you use print()
 
 **Question 1.2:** The f-string format specifier `:.2f` controls how `price`
 is displayed. What does it mean, and what would `:.4f` produce for `18.9`?
 
-> *Your answer:*
+> :.2f means fixed-point notation with exactly 2 decimal places. :.4f for 18.9 would produce 18.9000.
 
 ---
 
@@ -167,13 +170,13 @@ Exit the REPL:
 can write `sqrt(144)` without the `math.` prefix. What is the drawback of
 this style compared to `import math`?
 
-> *Your answer:*
+> Importing sqrt directly with from math import sqrt eliminates the math. prefix, but it also increases the risk of name conflicts. If another function named sqrt exists in your program, Python cannot distinguish between them. Using import math and calling math.sqrt() avoids this issue by indicating that the function belongs to the math module.
 
 **Question 2.2:** The standard library is always available — it requires no
 installation. Name two other standard library modules (not `math`) and
 describe in one sentence what each one is used for.
 
-> *Your answer:*
+> os which is  used for interacting with the operating system and random that we use gor generating random numbers or picking random selections from a list.
 
 ---
 
@@ -234,7 +237,7 @@ python3 berechnung.py
 > **Screenshot 3:** Take a screenshot showing the terminal output of
 > `python3 berechnung.py`.
 >
-> `[insert screenshot]`
+> <img width="1065" height="141" alt="image" src="https://github.com/user-attachments/assets/635eb9a1-ed31-4d1a-99f6-7642c16f8c35" />
 
 ### Step 4 – Commit
 
