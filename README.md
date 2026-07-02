@@ -636,7 +636,8 @@ uv run python3 abfrage.py
 
 > **Screenshot 6:** Take a screenshot showing the query result table.
 >
-> `[insert screenshot]`
+> <img width="1086" height="145" alt="image" src="https://github.com/user-attachments/assets/c6b4faa8-26c3-41c7-ac77-fc0f4fc5824f" />
+
 
 ### Step 4 – Commit
 
@@ -652,20 +653,20 @@ git push
 query. What is the role of a cursor in the database connection model?
 Why is one connection able to hold multiple cursors simultaneously?
 
-> *Your answer:*
+> A cursor is the object that sends SQL queries to the database and holds the results. The connection represents the session with the database, while the cursor is the actual tool you use to execute statements and fetch rows. One connection can hold multiple cursors simultaneously because each cursor tracks its own query state independently.
 
 **Question 5.2:** The connection parameters (username, password, host) are
 written directly in the script as `DB_CONFIG`. Why is this a security problem
 in a real project? Name one common alternative for storing credentials outside
 the source code.
 
-> *Your answer:*
+> Hardcoding credentials in the script is a security risk because anyone with access to the source code (e.g. via GitHub) can see the username and password. The standard alternative is to store credentials in environment variables and read them with os.environ.get("DB_PASSWORD").
 
 **Question 5.3:** `cursor.fetchall()` returns a list of tuples. The script
 accesses `row[0]`, `row[1]`, etc. by index. What is the risk of this approach,
 and which `psycopg2` cursor subclass would return named columns instead?
 
-> *Your answer:*
+> Using numeric indexes such as row[0] or row[1] makes the code sensitive to changes in the query's column order. If the order changes, the program may read incorrect values without raising an error. By using psycopg2.extras.RealDictCursor, each row is returned as a dictionary keyed by column names, allowing access through expressions like row["nachname"], which improves both reliability and code readability.
 
 ---
 
@@ -759,7 +760,8 @@ from your code.
 > **Screenshot 7:** Take a screenshot showing the `curl` response and the
 > uvicorn startup log in the other terminal.
 >
-> `[insert screenshot]`
+> <img width="726" height="61" alt="image" src="https://github.com/user-attachments/assets/987aac4e-aaa4-4f64-876e-b392b19114e7" />
+
 
 ### Step 4 – Commit
 
@@ -777,12 +779,12 @@ git push
 automatically. What standard does it use to describe the API, and what
 advantage does machine-readable API documentation have over a PDF?
 
-> *Your answer:*
+> FastAPI generates API documentation based on the OpenAPI specification, which provides a structured, machine-readable description of the available endpoints. Because the documentation follows a standard format, development tools can automatically create client libraries, perform request validation, and support automated testing. A PDF, on the other hand, is only a static document that must be updated manually and cannot be processed directly by software.
 
 **Question 6.2:** The `--reload` flag is useful during development but should
 not be used in production. Why?
 
-> *Your answer:*
+> The --reload option monitors the project's files for changes and automatically restarts the server whenever code is modified. While this is convenient during development, it is not suitable for production because it consumes additional system resources, increases restart overhead, and can interrupt active requests or connections if the server restarts unexpectedly.
 
 ---
 
@@ -941,8 +943,10 @@ Try posting the same e-mail a second time and observe the 409 error response.
 
 > **Screenshot 8:** Take a screenshot showing the curl output for all three
 > endpoints, including the 409 error on the duplicate POST.
->
-> `[insert screenshot]`
+> <img width="935" height="241" alt="image" src="https://github.com/user-attachments/assets/9ab03a87-a5ef-4a54-86cd-dddd83281c68" />
+
+> 
+
 
 ### Step 4 – Commit
 
@@ -959,20 +963,20 @@ git push
 What would be the security risk of building the SQL string by concatenation
 (`"VALUES ('" + mitglied.nachname + "'...)`)? Name the attack this prevents.
 
-> *Your answer:*
+> Constructing SQL queries by directly concatenating user input is unsafe because it allows malicious input to be interpreted as part of the SQL command. For example, an attacker could insert SQL statements that modify or delete database data. Using parameterized queries with %s placeholders avoids this risk by sending user input separately from the SQL statement, ensuring it is handled as data rather than executable code. This type of security vulnerability is known as SQL injection.
 
 **Question 7.2:** The `RealDictCursor` in endpoints 1 and 2 returns each row
 as a dictionary instead of a tuple. Why does this make the API response more
 useful to a client that receives the JSON output?
 
-> *Your answer:*
+> RealDictCursor returns database rows as dictionaries where column names act as keys, so results can be accessed using meaningful field names such as {"nachname": "Müller", "titel": "Der Prozess"}. This structure makes it possible for API clients to work with named attributes instead of relying on column positions, which improves clarity and reduces the risk of errors if the database query changes.
 
 **Question 7.3:** A caller of `GET /ausleihen/offen` receives a list of open
 loans without knowing anything about the underlying table structure, join logic,
 or database credentials. Name two concrete advantages this abstraction provides
 compared to giving every caller direct database access.
 
-> *Your answer:*
+> First, it improves security because clients never receive database credentials; only the backend API interacts directly with the database. Second, it increases flexibility since changes to the database schema or queries do not affect clients, as long as the API contract remains unchanged.
 
 ---
 
@@ -984,7 +988,7 @@ can call `/ausleihen/offen` without knowing SQL. What is the general software
 engineering principle behind this, and where else in a typical application
 stack does the same principle appear?
 
-> *Your answer:*
+> This reflects the principle of separation of concerns, where each system layer is responsible for a specific task and abstracts away its internal implementation from other layers. This pattern is common in modern software architectures: databases encapsulate data storage and retrieval, APIs encapsulate business and query logic behind a stable interface, and frontends encapsulate presentation and user interaction, shielding users from underlying complexity.
 
 **Question B – Stateless HTTP vs. database connections:**  
 Each of the three endpoints opens a new database connection and closes it after
@@ -992,7 +996,7 @@ the query. In a production system with hundreds of simultaneous requests this
 would be inefficient. What is the standard solution, and which Python library
 provides it for `psycopg2`?
 
-> *Your answer:*
+>Creating a new database connection for every request can become costly under high load due to repeated connection setup overhead. A common solution is to use a connection pool, which maintains a set of persistent, reusable connections that can be shared across requests. In psycopg2, this functionality is available via psycopg2.pool, while higher-level libraries like SQLAlchemy include built-in connection pooling mechanisms.
 
 **Question C – Authentication:**  
 The API currently has no access control — anyone who can reach the server on
@@ -1001,7 +1005,7 @@ to a FastAPI application are **JWT tokens** (stateless, validated by the API
 itself) and **Keycloak** (external identity provider, acting as middleware).
 What is the main operational difference between the two approaches?
 
-> *Your answer:*
+> With JWT-based authentication, the API can verify tokens locally using a shared secret or public key, which makes the process stateless and avoids the need for a call to an external service on every request. In contrast, systems like Keycloak delegate authentication to a centralized identity provider, which simplifies user and session management but introduces an external dependency that can affect availability and adds network overhead per validation.
 
 **Question D – The abstraction chain:**  
 You have now built a complete chain: raw data in PostgreSQL → SQL query in
@@ -1009,7 +1013,7 @@ Python → JSON response from FastAPI → curl client. Describe in two sentences
 what each link in this chain contributes and why removing any one of them
 would make the system harder to use or maintain.
 
-> *Your answer:*
+> PostgreSQL provides persistent storage and efficient querying of raw data, forming the foundation of the system. Without it, there would be no reliable data source. Python with psycopg2 acts as the integration layer that executes SQL queries and converts results into Python objects, enabling application-level processing that the database alone cannot perform. FastAPI then exposes this functionality through HTTP endpoints, allowing external clients to interact with the system in a standardized way. Finally, tools like curl consume these endpoints over HTTP; without the API layer, such clients would require direct database access and credentials, which is neither secure nor practical.
 
 ---
 
